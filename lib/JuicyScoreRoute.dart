@@ -53,6 +53,7 @@ class _JuicyScoreState extends State<JuicyScoreRoute> {
               }
             case "session":
               {
+                initiated = true;
                 _log(call.arguments);
                 break;
               }
@@ -89,7 +90,7 @@ class _JuicyScoreState extends State<JuicyScoreRoute> {
         optionsAndroid: OptionsAndroid(
       setRawDataApiKeyToken: "THd9QQB8MEfEZNHCcLJPizCuTEST",
       setEnvironment: Environment.test.name,
-      setRegionalDomain: RegionalDomain.auto.name,
+      setRegionalDomain: RegionalDomain.mumbai.name,
       setSendHostname: true,
       setSendDns: true,
       setCollectAppsList: true,
@@ -157,10 +158,14 @@ class _JuicyScoreState extends State<JuicyScoreRoute> {
               ),
             ),
           )
-        : SizedBox(
-            child: Center(child: CircularProgressIndicator()),
-            height: 50.0,
-            width: 50.0,
+        : Scaffold(
+            body: Center(
+              child: SizedBox(
+                child: Center(child: CircularProgressIndicator()),
+                height: 50.0,
+                width: 50.0,
+              ),
+            ),
           );
   }
 }

@@ -1,4 +1,4 @@
-group 'com.juicyscore.juicyscore_flutter'
+group 'com.loan.juicyscore_flutter'
 version '1.0'
 
 buildscript {
@@ -29,7 +29,7 @@ android {
         namespace 'com.loan.juicyscore_flutter'
     }
 
-    compileSdkVersion 34
+    compileSdkVersion 35
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
