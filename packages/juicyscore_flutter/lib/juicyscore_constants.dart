@@ -1,4 +1,4 @@
-class Constants {
+class JuicyScoreConstants {
   ///juicyscore flutter Channel
   static const String methodChannel = "juicyscore_flutter";
 

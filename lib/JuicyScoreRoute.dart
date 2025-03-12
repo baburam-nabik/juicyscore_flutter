@@ -7,7 +7,7 @@ import 'package:juicyscore_flutter/juicyscore_flutter.dart';
 import 'ScrollText.dart';
 import 'TestTapButton.dart';
 
-const MethodChannel _channel = MethodChannel('juicyscore_flutter');
+const MethodChannel _channel = MethodChannel(JuicyScoreConstants.methodChannel);
 
 class JuicyScoreRoute extends StatefulWidget {
   const JuicyScoreRoute({super.key});
@@ -27,33 +27,33 @@ class _JuicyScoreState extends State<JuicyScoreRoute> {
   void initState() {
     _channel.setMethodCallHandler((call) async => setState(() {
           switch (call.method) {
-            case "initiated":
+            case JuicyScoreConstants.initiated:
               {
                 initiated = true;
                 _log(call.arguments);
                 break;
               }
-            case "initError":
+            case JuicyScoreConstants.initError:
               {
                 _log(call.arguments);
                 break;
               }
-            case "completed":
+            case JuicyScoreConstants.completed:
               {
                 _log(call.arguments);
                 break;
               }
-            case "stopped":
+            case JuicyScoreConstants.stopped:
               {
                 _log(call.arguments);
                 break;
               }
-            case "version":
+            case JuicyScoreConstants.version:
               {
                 _log(call.arguments);
                 break;
               }
-            case "session":
+            case JuicyScoreConstants.session:
               {
                 sessionId = call.arguments;
                 initiated = true;
@@ -61,22 +61,22 @@ class _JuicyScoreState extends State<JuicyScoreRoute> {
                 _log("SESSION_ID: ${call.arguments}");
                 break;
               }
-            case "error":
+            case JuicyScoreConstants.error:
               {
                 _log(call.arguments);
                 break;
               }
-            case "log":
+            case JuicyScoreConstants.log:
               {
                 _log(call.arguments);
                 break;
               }
-            case "jsLog":
+            case JuicyScoreConstants.jsLog:
               {
                 _log(call.arguments);
                 break;
               }
-            case "warning":
+            case JuicyScoreConstants.warning:
               {
                 _log(call.arguments);
                 break;
