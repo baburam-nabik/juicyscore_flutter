@@ -1,13 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:juicyscore_flutter/initialization_sdk.dart';
 import 'package:juicyscore_flutter/juicyscore_flutter.dart';
 
 import 'ScrollText.dart';
 import 'TestTapButton.dart';
-
-const MethodChannel _channel = MethodChannel(JuicyScoreConstants.methodChannel);
 
 class JuicyScoreRoute extends StatefulWidget {
   const JuicyScoreRoute({super.key});
@@ -17,7 +13,7 @@ class JuicyScoreRoute extends StatefulWidget {
 }
 
 class _JuicyScoreState extends State<JuicyScoreRoute> {
-  final _juicyscoreFlutterPlugin = JuicyscoreFlutter();
+  final _juicyscoreFlutterPlugin = JuicyScoreFlutter();
   int panStartTime = 0;
   Size? screenSize;
   bool initiated = false;
@@ -25,64 +21,6 @@ class _JuicyScoreState extends State<JuicyScoreRoute> {
 
   @override
   void initState() {
-    _channel.setMethodCallHandler((call) async => setState(() {
-          switch (call.method) {
-            case JuicyScoreConstants.initiated:
-              {
-                initiated = true;
-                _log(call.arguments);
-                break;
-              }
-            case JuicyScoreConstants.initError:
-              {
-                _log(call.arguments);
-                break;
-              }
-            case JuicyScoreConstants.completed:
-              {
-                _log(call.arguments);
-                break;
-              }
-            case JuicyScoreConstants.stopped:
-              {
-                _log(call.arguments);
-                break;
-              }
-            case JuicyScoreConstants.version:
-              {
-                _log(call.arguments);
-                break;
-              }
-            case JuicyScoreConstants.session:
-              {
-                sessionId = call.arguments;
-                initiated = true;
-                _log(call.arguments);
-                _log("SESSION_ID: ${call.arguments}");
-                break;
-              }
-            case JuicyScoreConstants.error:
-              {
-                _log(call.arguments);
-                break;
-              }
-            case JuicyScoreConstants.log:
-              {
-                _log(call.arguments);
-                break;
-              }
-            case JuicyScoreConstants.jsLog:
-              {
-                _log(call.arguments);
-                break;
-              }
-            case JuicyScoreConstants.warning:
-              {
-                _log(call.arguments);
-                break;
-              }
-          }
-        }));
     _juicyscoreFlutterPlugin.init(
         // optionsIos: OptionsIos(
         //   setRawDataApiKeyToken: "iOSRawDataApiKeyToken",
@@ -99,7 +37,62 @@ class _JuicyScoreState extends State<JuicyScoreRoute> {
       setSendDns: true,
       setCollectAppsList: true,
     ));
+
     _juicyscoreFlutterPlugin.startJuicyScore();
+
+    JuicyScoreFlutter.eventsStream.listen((event) {
+      JuicyScoreEventMethod method = event.method;
+      final data = event.data;
+
+      switch (method) {
+        case JuicyScoreEventMethod.initiated:
+          setState(() => initiated = true);
+          break;
+
+        case JuicyScoreEventMethod.initError:
+          debugPrint("[JuicyScore] Init Error: $data");
+          break;
+
+        case JuicyScoreEventMethod.completed:
+          debugPrint("[JuicyScore] Completed: $data");
+          break;
+
+        case JuicyScoreEventMethod.stopped:
+          debugPrint("[JuicyScore] Stopped: $data");
+          break;
+
+        case JuicyScoreEventMethod.version:
+          debugPrint("[JuicyScore] Version: $data");
+          break;
+
+        case JuicyScoreEventMethod.session:
+          setState(() {
+            initiated = true;
+            sessionId = data;
+          });
+          debugPrint("SESSION_ID: $data");
+          break;
+
+        case JuicyScoreEventMethod.error:
+          debugPrint("[JuicyScore] Error: $data");
+          break;
+
+        case JuicyScoreEventMethod.log:
+          debugPrint("[JuicyScore] Log: $data");
+          break;
+
+        case JuicyScoreEventMethod.jsLog:
+          debugPrint("[JuicyScore] JS Log: $data");
+          break;
+
+        case JuicyScoreEventMethod.warning:
+          debugPrint("[JuicyScore] Warning: $data");
+          break;
+
+        default:
+          debugPrint("[JuicyScore] Unhandled Event: $method | Data: $data");
+      }
+    });
     super.initState();
   }
 
@@ -249,7 +242,7 @@ class TextFieldCustom extends StatefulWidget {
 }
 
 class _TextFieldCustomState extends State<TextFieldCustom> {
-  final _juicyscoreFlutterPlugin = JuicyscoreFlutter();
+  final _juicyscoreFlutterPlugin = JuicyScoreFlutter();
   final _controller = TextEditingController();
 
   @override

@@ -2,18 +2,6 @@ class JuicyScoreConstants {
   ///juicyscore flutter Channel
   static const String methodChannel = "juicyscore_flutter";
 
-  ///Methods
-  static const String initiated = "initiated";
-  static const String initError = "initError";
-  static const String completed = "completed";
-  static const String stopped = "stopped";
-  static const String version = "version";
-  static const String session = "session";
-  static const String error = "error";
-  static const String log = "log";
-  static const String jsLog = "jsLog";
-  static const String warning = "warning";
-
   static const String initIos = "initIos";
   static const String initAndroid = "initAndroid";
   static const String startJuicyScore = "startJuicyScore";

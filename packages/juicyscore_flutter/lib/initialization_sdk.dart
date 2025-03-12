@@ -78,5 +78,6 @@ class OptionsAndroid {
   });
 }
 
-enum Environment {test, prod, jcsc, dev}
-enum RegionalDomain {auto, amsterdam, singapore, saintpetersburg, northamerica, mumbai, abudhabi, hochiminh, jakarta }
+enum Environment { test, prod, jcsc, dev }
+
+enum RegionalDomain { auto, amsterdam, singapore, saintpetersburg, northamerica, mumbai, abudhabi, hochiminh, jakarta }

@@ -1,13 +1,22 @@
+import 'dart:async';
 import 'dart:io';
 
-import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:juicyscore_flutter/juicyscore_constants.dart';
 
 import 'initialization_sdk.dart';
+import 'juicyscore_event.dart';
 import 'juicyscore_flutter_platform_interface.dart';
 
+export 'initialization_sdk.dart';
+export 'initialization_sdk_map.dart';
 export 'juicyscore_constants.dart';
+export 'juicyscore_event.dart';
+export 'juicyscore_flutter_method_channel.dart';
 
-class JuicyscoreFlutter {
+class JuicyScoreFlutter {
+  static const MethodChannel _channel = MethodChannel(JuicyScoreConstants.methodChannel);
+
   Future<void> init({OptionsIos? optionsIos, OptionsAndroid? optionsAndroid}) async {
     if (Platform.isAndroid && optionsAndroid != null) {
       initAndroid(optionsAndroid);
@@ -15,6 +24,7 @@ class JuicyscoreFlutter {
     if (Platform.isIOS && optionsIos != null) {
       initIos(optionsIos);
     }
+    _channel.setMethodCallHandler(_handleMethodCall);
   }
 
   Future<void> initIos(OptionsIos optionsIos) async {
@@ -71,5 +81,21 @@ class JuicyscoreFlutter {
 
   Future<void> setQuarters(Size screenSize, double x, double y) async {
     JuicyscoreFlutterPlatform.instance.setQuarters(screenSize, x, y);
+  }
+
+  ///------------------------------------------------------------------------
+  static final StreamController<JuicyScoreEvent> _eventController = StreamController.broadcast();
+
+  /// Expose stream for listening to JuicyScore events
+  static Stream<JuicyScoreEvent> get eventsStream => _eventController.stream;
+
+  static Future<void> _handleMethodCall(MethodCall call) async {
+    final event = JuicyScoreEvent.fromMethodCall(call.method, call.arguments);
+    _eventController.add(event);
+  }
+
+  /// Dispose StreamController when no longer needed
+  static void dispose() {
+    _eventController.close();
   }
 }
